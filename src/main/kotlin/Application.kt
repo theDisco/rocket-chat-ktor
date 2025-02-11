@@ -28,6 +28,9 @@ fun Application.setupServerTelemetry(): OpenTelemetry {
 }
 
 fun Application.module() {
+    Database.connect()
+    Database.migrate()
+
     install(ContentNegotiation) {
         json()
     }

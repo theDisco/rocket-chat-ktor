@@ -34,3 +34,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Local settings ###
+src/main/resources/db.properties

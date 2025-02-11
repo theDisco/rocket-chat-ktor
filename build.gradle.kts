@@ -35,8 +35,13 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.47.0");
     implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.47.0");
     implementation("io.opentelemetry.semconv:opentelemetry-semconv:1.30.0-rc.1")
-}
 
-//tasks.withType<JavaExec> {
-//    environment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317/")
-//}
+    val exposedVersion: String by project
+
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+    implementation("org.postgresql:postgresql:42.7.5")
+    implementation("com.zaxxer:HikariCP:6.2.1")
+}

@@ -1,0 +1,54 @@
+openapi: "3.0.3"
+info:
+  title: "Message API"
+  description: "API for creating and managing messages"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /message:
+    post:
+      summary: Create a new message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - author
+              properties:
+                content:
+                  type: string
+                  description: The content of the message
+                author:
+                  type: string
+                  description: The author of the message
+      responses:
+        '201':
+          description: Message created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  content:
+                    type: string
+                  author:
+                    type: string
+                  timestamp:
+                    type: integer
+                    format: int64
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string 

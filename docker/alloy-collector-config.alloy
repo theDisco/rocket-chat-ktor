@@ -1,0 +1,23 @@
+otelcol.receiver.otlp "example" {
+    grpc {
+        endpoint = "0.0.0.0:4317"
+    }
+
+    output {
+        metrics = [otelcol.processor.batch.example.input]
+        logs    = [otelcol.processor.batch.example.input]
+        traces  = [otelcol.processor.batch.example.input]
+    }
+}
+
+otelcol.processor.batch "example" {
+    output {
+        metrics = [otelcol.exporter.debug.default.input]
+        logs    = [otelcol.exporter.debug.default.input]
+        traces  = [otelcol.exporter.debug.default.input]
+    }
+}
+
+otelcol.exporter.debug "default" {
+    verbosity = "detailed"
+}

@@ -2,6 +2,7 @@ package com.example
 
 import com.example.config.Database
 import com.example.config.respondWithError
+import com.example.routing.users
 import com.example.validation.configureValidation
 import io.ktor.http.*
 import io.ktor.server.application.*

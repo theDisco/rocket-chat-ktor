@@ -1,8 +1,7 @@
 package com.example
 
-import kotlinx.serialization.Serializable
+import com.example.model.Users
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.javatime.datetime
 
 object Conversations : IntIdTable("conversations") {
@@ -34,9 +33,4 @@ object Participants : IntIdTable("participants") {
     val updatedAt = datetime("updated_at")
 }
 
-object Users : IntIdTable("users") {
-    val name = varchar("name", 255)
-    val email = varchar("email", 255).uniqueIndex()
-    val createdAt = datetime("created_at")
-    val updatedAt = datetime("updated_at")
-}
+

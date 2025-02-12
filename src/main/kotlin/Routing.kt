@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.config.respondWithError
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -12,6 +13,7 @@ import io.opentelemetry.api.common.AttributeKey
 import io.opentelemetry.api.logs.Severity
 import io.opentelemetry.api.trace.Span
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
@@ -46,7 +48,7 @@ fun Route.users() {
             if (user != null) {
                 call.respond(HttpStatusCode.Created, user)
             } else {
-                call.respond(HttpStatusCode.BadRequest, "Failed to create user")
+                call.respondWithError(HttpStatusCode.BadRequest, "Failed to create user")
             }
         }
     }

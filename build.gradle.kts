@@ -30,6 +30,8 @@ dependencies {
     implementation(libs.ktor.server.swagger)
     implementation(libs.ktor.server.openapi)
     implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.server.request.validation)
+    implementation(libs.ktor.server.status.pages)
 
     implementation("io.opentelemetry.instrumentation:opentelemetry-ktor-3.0:2.12.0-alpha")
     implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.47.0");

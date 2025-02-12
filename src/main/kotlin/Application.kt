@@ -3,6 +3,8 @@ package com.example
 import io.ktor.server.application.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.swagger.*
+import io.ktor.server.routing.*
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.instrumentation.ktor.v3_0.server.KtorServerTracing
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
@@ -35,5 +37,8 @@ fun Application.module() {
         json()
     }
 
-    configureRouting()
+    routing {
+        users()
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
+    }
 }

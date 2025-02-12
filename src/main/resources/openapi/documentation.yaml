@@ -1,54 +1,76 @@
-openapi: "3.0.3"
+openapi: "3.1.0"
 info:
-  title: "Message API"
-  description: "API for creating and managing messages"
+  title: "rocket_chat API"
+  description: "rocket_chat API"
   version: "1.0.0"
 servers:
-  - url: http://localhost:8080
+- url: "http://localhost:8080"
 paths:
-  /message:
+  /users:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
     post:
-      summary: Create a new message
+      description: ""
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - content
-                - author
-              properties:
-                content:
-                  type: string
-                  description: The content of the message
-                author:
-                  type: string
-                  description: The author of the message
+              $ref: "#/components/schemas/UserRequest"
+        required: true
       responses:
-        '201':
-          description: Message created successfully
+        "201":
+          description: "Created"
           content:
-            application/json:
+            '*/*':
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                  content:
-                    type: string
-                  author:
-                    type: string
-                  timestamp:
-                    type: integer
-                    format: int64
-        '400':
-          description: Bad request
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad Request"
           content:
-            application/json:
+            '*/*':
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string 
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Failed to create user"
+components:
+  schemas:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        email:
+          type: "string"
+        createdAt:
+          type: "string"
+        updatedAt:
+          type: "string"
+      required:
+      - "id"
+      - "name"
+      - "email"
+      - "createdAt"
+      - "updatedAt"
+    UserRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        email:
+          type: "string"
+      required:
+      - "name"
+      - "email"

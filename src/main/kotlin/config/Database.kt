@@ -1,5 +1,6 @@
-package com.example
+package com.example.config
 
+import com.example.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers

@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.config.Database
 import com.example.config.respondWithError
 import com.example.validation.configureValidation
 import io.ktor.http.*
@@ -9,7 +10,6 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.instrumentation.ktor.v3_0.server.KtorServerTracing

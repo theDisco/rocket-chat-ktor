@@ -40,20 +40,3 @@ object Users : IntIdTable("users") {
     val createdAt = datetime("created_at")
     val updatedAt = datetime("updated_at")
 }
-
-@Serializable
-data class User(val id: Int, val name: String, val email: String, val createdAt: String, val updatedAt: String) {
-    companion object {
-        fun fromRow(it: ResultRow) =
-            User(
-                id = it[Users.id].value,
-                name = it[Users.name].toString(),
-                email = it[Users.email].toString(),
-                createdAt = it[Users.createdAt].toString(),
-                updatedAt = it[Users.updatedAt].toString()
-            )
-    }
-}
-
-@Serializable
-data class UserRequest(val name: String, val email: String)

@@ -3,6 +3,7 @@ package com.example
 import com.example.config.Database
 import com.example.config.respondWithError
 import com.example.routing.users
+import com.example.service.Observability
 import com.example.validation.configureValidation
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -39,7 +40,9 @@ fun Application.setupServerTelemetry(): OpenTelemetry {
 }
 
 fun Application.module() {
-    Database.connect()
+    val telemetry = setupServerTelemetry()
+
+    Database.connect(telemetry)
     Database.migrate()
 
     install(ContentNegotiation) {
@@ -66,7 +69,7 @@ fun Application.module() {
     configureValidation()
 
     routing {
-        users()
+        users(Observability(telemetry))
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
     }
 }

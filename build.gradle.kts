@@ -34,7 +34,9 @@ dependencies {
     implementation(libs.ktor.server.status.pages)
 
     implementation("io.opentelemetry.instrumentation:opentelemetry-ktor-3.0:2.12.0-alpha")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:2.12.0-alpha")
     implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.47.0");
+    implementation("io.opentelemetry:opentelemetry-extension-kotlin:1.47.0")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.47.0");
     implementation("io.opentelemetry.semconv:opentelemetry-semconv:1.30.0-rc.1")
 

@@ -52,6 +52,7 @@ Alloy:
 
 ```
 docker run \
+  --env-file .env \
   -p 4317:4317 \
   -p 12345:12345 \
   -v $(pwd)/docker/alloy-collector-config.alloy:/etc/alloy/config.alloy \

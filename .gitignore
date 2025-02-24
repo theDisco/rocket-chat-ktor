@@ -37,3 +37,4 @@ out/
 
 ### Local settings ###
 src/main/resources/db.properties
+.env

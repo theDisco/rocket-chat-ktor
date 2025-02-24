@@ -8,7 +8,10 @@ otelcol.receiver.otlp "example" {
             otelcol.exporter.prometheus.metrics_hosted_prometheus.input,
             otelcol.processor.batch.example.input,
         ]
-        logs    = [otelcol.processor.batch.example.input]
+        logs    = [
+            otelcol.exporter.loki.grafanacloud.input,
+            otelcol.processor.batch.example.input,
+        ]
         traces  = [
             otelcol.exporter.otlp.grafanacloud.input,
             otelcol.processor.batch.example.input,
@@ -54,4 +57,19 @@ otelcol.exporter.otlp "grafanacloud" {
 otelcol.auth.basic "grafanacloud" {
   username = sys.env("GRAFANA_CLOUD_TEMPO_USER")
   password = sys.env("GRAFANA_CLOUD_API_KEY")
+}
+
+otelcol.exporter.loki "grafanacloud" {
+    forward_to = [loki.write.grafanacloud.receiver]
+}
+
+loki.write "grafanacloud" {
+  endpoint {
+    url = "https://logs-prod-012.grafana.net/loki/api/v1/push"
+
+    basic_auth {
+      username = sys.env("GRAFANA_CLOUD_LOKI_USER")
+      password = sys.env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
 }

@@ -64,6 +64,9 @@ fun Application.module() {
                 call.respondWithError(HttpStatusCode.InternalServerError, "Database error")
             }
         }
+        exception<IllegalArgumentException> { call, cause ->
+            call.respondWithError(HttpStatusCode.BadRequest, cause.localizedMessage)
+        }
     }
 
     configureValidation()

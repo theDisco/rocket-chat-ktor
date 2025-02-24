@@ -44,6 +44,14 @@ fun Route.users(observability: Observability) {
             val user =
                 observability.tracer.span("CreateUserDatabaseCallOne_${request.email}") {
                     Database.runQuery {
+                        val existingUser = Users.selectAll()
+                            .where(Users.email eq request.email)
+                            .singleOrNull()
+
+                        if (existingUser != null) {
+                            throw IllegalArgumentException("A user with this email already exists.")
+                        }
+
                         val userId = Users.insertAndGetId {
                             it[name] = request.name
                             it[email] = request.email

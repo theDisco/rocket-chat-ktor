@@ -41,6 +41,14 @@ object Database {
             properties.getProperty("database.username")?.let { username = it }
             properties.getProperty("database.password")?.let { password = it }
             properties.getProperty("database.maximumPoolSize")?.let { maximumPoolSize = it.toInt() }
+
+            minimumIdle = 5
+            idleTimeout = 60000
+            maxLifetime = 1800000
+            connectionTimeout = 30000
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+
             validate()
         }
         val dataSource = HikariDataSource(config)
@@ -52,7 +60,14 @@ object Database {
         val context = Context.current()
         return newSuspendedTransaction(Dispatchers.IO) {
             withContext(context.asContextElement()) {
-                block()
+                try {
+                    val result = block()
+                    commit()
+                    result
+                } catch (e: Exception) {
+                    rollback()
+                    throw e
+                }
             }
         }
     }

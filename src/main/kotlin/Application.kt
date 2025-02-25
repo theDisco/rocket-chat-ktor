@@ -8,13 +8,15 @@ import com.example.validation.configureValidation
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.metrics.micrometer.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 import io.opentelemetry.api.OpenTelemetry
-import io.opentelemetry.instrumentation.ktor.v3_0.server.KtorServerTracing
+import io.opentelemetry.instrumentation.ktor.v3_0.KtorServerTelemetry
+import io.opentelemetry.instrumentation.micrometer.v1_5.OpenTelemetryMeterRegistry
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import io.opentelemetry.semconv.ServiceAttributes
 import org.jetbrains.exposed.exceptions.ExposedSQLException
@@ -25,14 +27,17 @@ fun main(args: Array<String>) {
 }
 
 fun Application.setupServerTelemetry(): OpenTelemetry {
-    val openTelemetry = AutoConfiguredOpenTelemetrySdk.builder().addResourceCustomizer { oldResource, _ ->
-        oldResource.toBuilder()
-            .putAll(oldResource.attributes)
-            .put(ServiceAttributes.SERVICE_NAME, "rocket-chat")
-            .build()
-    }.build().openTelemetrySdk
+    val openTelemetry = AutoConfiguredOpenTelemetrySdk.builder()
+        .addResourceCustomizer { oldResource, _ ->
+            oldResource.toBuilder()
+                .putAll(oldResource.attributes)
+                .put(ServiceAttributes.SERVICE_NAME, "rocket-chat")
+                .build()
+        }
+        .build()
+        .openTelemetrySdk
 
-    install(KtorServerTracing) {
+    install(KtorServerTelemetry) {
         setOpenTelemetry(openTelemetry)
     }
 
@@ -41,6 +46,11 @@ fun Application.setupServerTelemetry(): OpenTelemetry {
 
 fun Application.module() {
     val telemetry = setupServerTelemetry()
+    val appMicrometerRegistry = OpenTelemetryMeterRegistry.create(telemetry)
+
+    install(MicrometerMetrics) {
+        registry = appMicrometerRegistry
+    }
 
     Database.connect(telemetry)
     Database.migrate()

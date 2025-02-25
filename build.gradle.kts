@@ -32,12 +32,19 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.request.validation)
     implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.server.metrics.micrometer)
 
-    implementation("io.opentelemetry.instrumentation:opentelemetry-ktor-3.0:2.12.0-alpha")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:2.12.0-alpha")
-    implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.47.0");
-    implementation("io.opentelemetry:opentelemetry-extension-kotlin:1.47.0")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.47.0");
+    val instrumentationVersion = "2.13.1-alpha"
+    val sdkVersion = "1.47.0"
+
+    implementation("io.opentelemetry.instrumentation:opentelemetry-ktor-3.0:$instrumentationVersion")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:$instrumentationVersion")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5:$instrumentationVersion")
+
+    implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:$sdkVersion");
+    implementation("io.opentelemetry:opentelemetry-extension-kotlin:$sdkVersion")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp:$sdkVersion");
+
     implementation("io.opentelemetry.semconv:opentelemetry-semconv:1.30.0-rc.1")
 
     val exposedVersion: String by project

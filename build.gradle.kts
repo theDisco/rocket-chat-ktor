@@ -34,25 +34,20 @@ dependencies {
     implementation(libs.ktor.server.status.pages)
     implementation(libs.ktor.server.metrics.micrometer)
 
-    val instrumentationVersion = "2.13.1-alpha"
-    val sdkVersion = "1.47.0"
+    // OpenTelemetry dependencies
+    implementation(libs.otel.instrumentation.ktor)
+    implementation(libs.otel.instrumentation.jdbc)
+    implementation(libs.otel.instrumentation.micrometer)
+    implementation(libs.otel.opentelemetry.sdk.extension.autoconfigure)
+    implementation(libs.otel.opentelemetry.extension.kotlin)
+    implementation(libs.otel.opentelemetry.exporter.otlp)
+    implementation(libs.otel.opentelemetry.semconv)
 
-    implementation("io.opentelemetry.instrumentation:opentelemetry-ktor-3.0:$instrumentationVersion")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:$instrumentationVersion")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5:$instrumentationVersion")
-
-    implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:$sdkVersion");
-    implementation("io.opentelemetry:opentelemetry-extension-kotlin:$sdkVersion")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp:$sdkVersion");
-
-    implementation("io.opentelemetry.semconv:opentelemetry-semconv:1.30.0-rc.1")
-
-    val exposedVersion: String by project
-
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
-    implementation("org.postgresql:postgresql:42.7.5")
-    implementation("com.zaxxer:HikariCP:6.2.1")
+    // Database dependencies
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.java.time)
+    implementation(libs.postgresql.postgresql)
+    implementation(libs.hikari)
 }

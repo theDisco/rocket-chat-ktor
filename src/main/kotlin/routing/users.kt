@@ -28,8 +28,12 @@ fun Route.users(observability: Observability) {
         get {
             observability.meter.increment("user.list", "{request}", description = "List users")
             val response = Database.runQuery {
-                Users.selectAll().map { User.fromRow(it) }
+                Users.selectAll().limit(10).map { User.fromRow(it) }
             }
+            observability.logger.info(
+                "Retrieving all users",
+                Attributes.of(AttributeKey.stringKey("some_important_context_detail"), "foo")
+            )
             call.respond(response)
         }
 
@@ -42,7 +46,7 @@ fun Route.users(observability: Observability) {
             )
 
             val user =
-                observability.tracer.span("CreateUserDatabaseCallOne_${request.email}") {
+                observability.tracer.span("CreateUserDatabaseOperation") {
                     Database.runQuery {
                         val existingUser = Users.selectAll()
                             .where(Users.email eq request.email)

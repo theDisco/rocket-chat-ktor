@@ -8,9 +8,9 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
 
 export let options = {
     stages: [
-        { duration: '30s', target: 10 }, // Ramp up to 10 users over 30 seconds
-        { duration: '90s', target: 10 }, // Stay at 10 users for 90 seconds
-        { duration: '30s', target: 0 },  // Ramp down to 0 users
+        { duration: '300s', target: 10 }, // Ramp up to 10 users over 30 seconds
+        { duration: '900s', target: 10 }, // Stay at 10 users for 90 seconds
+        { duration: '300s', target: 0 },  // Ramp down to 0 users
     ],
     thresholds: {
         'http_req_duration': ['p(95)<500'],  // 95% of requests should be under 500ms
@@ -19,6 +19,18 @@ export let options = {
 
 export default function () {
     group('User CRUD Operations', function () {
+        // For 10% of the requests, cause a server error
+        if (Math.random() < 0.1) {
+            const userPayloadWithError = JSON.stringify({
+                name: 'Test User',
+                email: `testuser_${Math.floor(Math.random() * 100000)}@example.com`,
+                foo: 'bar', // This will cause a 500 error
+            });
+            http.post(`${BASE_URL}/users`, userPayloadWithError, {
+                headers: { 'Content-Type': 'application/json' },
+            })
+        }
+
         const userPayload = JSON.stringify({
             name: 'Test User',
             email: `testuser_${Math.floor(Math.random() * 100000)}@example.com`,
